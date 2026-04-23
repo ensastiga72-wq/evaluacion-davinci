@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación de Casos Da Vinci — Cyber Robotics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cr-navy: #1F3864;
+    --cr-navy-dark: #152847;
+    --cr-blue: #2E74B5;
+    --cr-blue-light: #4A90D9;
+    --cr-green: #7FB069;
+    --cr-bg: #F5F7FA;
+    --cr-white: #FFFFFF;
+    --cr-border: #E1E6ED;
+    --cr-text: #1A2332;
+    --cr-text-light: #64748B;
+    --cr-error: #C0392B;
+    --cr-success: #27AE60;
+    --cr-warning: #E67E22;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--cr-bg);
+    color: var(--cr-text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--cr-navy) 0%, var(--cr-navy-dark) 100%);
+    color: white;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .logo {
+    width: 40px; height: 40px;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo svg { width: 28px; height: 28px; }
+  .header-text h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .header-text p {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-top: 2px;
+  }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  /* SCREENS */
+  .screen { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SELECTOR INICIAL */
+  .intro-title {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--cr-navy);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .intro-subtitle {
+    color: var(--cr-text-light);
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
+  .role-cards {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .role-card {
+    background: white;
+    border: 2px solid var(--cr-border);
+    border-radius: var(--radius);
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  .role-card:hover {
+    border-color: var(--cr-blue);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  .role-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--cr-navy) 0%, var(--cr-blue) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+  }
+  .role-icon svg { width: 26px; height: 26px; }
+  .role-title {
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--cr-navy);
+    margin-bottom: 4px;
+  }
+  .role-desc {
+    font-size: 13.5px;
+    color: var(--cr-text-light);
+    line-height: 1.5;
+  }
+
+  .privacy-notice {
+    background: white;
+    border-left: 3px solid var(--cr-blue);
+    padding: 14px 18px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: var(--cr-text-light);
+    line-height: 1.55;
+  }
+  .privacy-notice strong {
+    color: var(--cr-navy);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+
+  /* FORMULARIO */
+  .form-header {
+    margin-bottom: 24px;
+  }
+  .form-title {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--cr-navy);
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+  .form-subtitle {
+    color: var(--cr-text-light);
+    font-size: 14px;
+  }
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--cr-blue);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px 0;
+    margin-bottom: 14px;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .back-btn:hover { color: var(--cr-navy); }
+
+  /* PROGRESO */
+  .progress {
+    background: var(--cr-border);
+    height: 4px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    background: linear-gradient(90deg, var(--cr-blue) 0%, var(--cr-blue-light) 100%);
+    height: 100%;
+    transition: width 0.3s ease;
+  }
+
+  /* QUESTIONS */
+  .question {
+    background: white;
+    border-radius: var(--radius);
+    padding: 22px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--cr-border);
+  }
+  .question-label {
+    display: block;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--cr-navy);
+    margin-bottom: 4px;
+  }
+  .question-num {
+    color: var(--cr-blue);
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .required { color: var(--cr-error); }
+  .question-hint {
+    font-size: 12.5px;
+    color: var(--cr-text-light);
+    margin-bottom: 12px;
+  }
+
+  /* INPUTS */
+  input[type="text"], input[type="date"], select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--cr-border);
+    border-radius: 8px;
+    font-size: 14.5px;
+    font-family: inherit;
+    color: var(--cr-text);
+    background: white;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  input[type="text"]:focus, input[type="date"]:focus, select:focus {
+    outline: none;
+    border-color: var(--cr-blue);
+    box-shadow: 0 0 0 3px rgba(46, 116, 181, 0.15);
+  }
+
+  /* LIKERT TABLE */
+  .likert-container {
+    margin-top: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .likert-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 560px;
+    font-size: 13px;
+  }
+  .likert-table th {
+    padding: 10px 6px;
+    background: var(--cr-navy);
+    color: white;
+    font-weight: 600;
+    font-size: 11.5px;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  .likert-table th:first-child {
+    text-align: left;
+    padding-left: 14px;
+    border-top-left-radius: 6px;
+  }
+  .likert-table th:last-child { border-top-right-radius: 6px; }
+  .likert-table td {
+    padding: 10px 6px;
+    text-align: center;
+    border-bottom: 1px solid var(--cr-border);
+  }
+  .likert-table td:first-child {
+    text-align: left;
+    padding-left: 14px;
+    color: var(--cr-text);
+    font-weight: 500;
+    font-size: 13px;
+    max-width: 280px;
+    line-height: 1.35;
+  }
+  .likert-table tr:last-child td { border-bottom: none; }
+  .likert-table tr:nth-child(even) td { background: #FAFBFC; }
+  .likert-table input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--cr-blue);
+    cursor: pointer;
+  }
+
+  /* SINGLE LIKERT */
+  .single-likert {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .likert-option {
+    background: #F8F9FB;
+    border: 1.5px solid var(--cr-border);
+    border-radius: 8px;
+    padding: 12px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--cr-text-light);
+    user-select: none;
+  }
+  .likert-option input { display: none; }
+  .likert-option:hover {
+    border-color: var(--cr-blue-light);
+    background: white;
+  }
+  .likert-option.selected {
+    background: var(--cr-blue);
+    color: white;
+    border-color: var(--cr-blue);
+    font-weight: 600;
+  }
+  .likert-option .emoji {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    padding: 13px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-primary {
+    background: var(--cr-navy);
+    color: white;
+    width: 100%;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--cr-navy-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-secondary {
+    background: white;
+    color: var(--cr-navy);
+    border: 1.5px solid var(--cr-border);
+  }
+  .btn-secondary:hover { border-color: var(--cr-navy); }
+
+  .submit-area {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--cr-border);
+  }
+  .submit-error {
+    background: #FEF2F2;
+    color: var(--cr-error);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    margin-bottom: 14px;
+    border-left: 3px solid var(--cr-error);
+  }
+
+  /* SUCCESS SCREEN */
+  .success {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--cr-success) 0%, #2EBB6E 100%);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+  .success h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--cr-navy);
+    margin-bottom: 8px;
+  }
+  .success p {
+    color: var(--cr-text-light);
+    margin-bottom: 24px;
+    font-size: 15px;
+  }
+
+  /* LOADING */
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RESPONSIVE */
+  @media (max-width: 540px) {
+    .intro-title { font-size: 24px; }
+    .form-title { font-size: 22px; }
+    .question { padding: 18px; }
+    .main { padding: 20px 14px 40px; }
+    .single-likert { gap: 4px; }
+    .likert-option { padding: 10px 3px; font-size: 10.5px; }
+    .likert-option .emoji { font-size: 18px; }
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--cr-text-light);
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 32 L14 8 L20 26 L26 12 L32 32" stroke="#1F3864" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="14" cy="8" r="2" fill="#7FB069"/>
+        <circle cx="20" cy="26" r="2" fill="#1F3864"/>
+        <circle cx="26" cy="12" r="2" fill="#2E74B5"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>Cyber Robotics</h1>
+      <p>Evaluación de casos Da Vinci</p>
+    </div>
+  </header>
+
+  <main class="main" id="main">
+    <!-- Contenido dinámico -->
+  </main>
+
+  <footer class="footer">
+    Cyber Robotics México &middot; Uso interno confidencial
+  </footer>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURACIÓN
+// ============================================================
+
+// IMPORTANTE: Reemplazar esta URL con la URL de tu Google Apps Script desplegado
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzb92iPKo9V0v0nl4oQ-2BXmsuOsZWInb6y51t2pKO8Wrv3n2tb7ZghGvn3rgicHjXvqw/exec';
+
+// ============================================================
+// DATOS
+// ============================================================
+
+const PROCTORS = [
+  "Jesús Elías Ortiz Gómez", "David de Leon Angeles", "Gregorio Zubieta O'Farril",
+  "Javier Kuri Osorio", "Cesar Felipe Ploneda Valencia", "Roberto Alfonso Estrada Gómez",
+  "Jorge Gonzalez Acosta", "Berenice Flores Maldonado", "Rodrigo Emilio Ruz Barros",
+  "Víctor Manuel Topete Camarena", "René Hernández Sánchez", "Itzel Vela Sarmiento",
+  "Miguel Arnoldo Farias Alarcón", "Rafael Medrano Guzmán", "Miguel Corres Molina",
+  "Edwin Amaury Pérez Morales", "Adalberto Castro Alfaro", "Christian Villeda Sandoval",
+  "Gustavo Morales Montor", "Seiichi Fuziwara Ruiz", "Narciso Hernandez Toríz",
+  "Pedro Salvador Jimenez", "Francina Valezka Bolaños Morales", "Aaron Torres Garcia",
+  "Alejandro Alias Melgar", "José Antonio Zapata", "Andres Hernandez Porras",
+  "Carlos Vásquez Lastra", "Gaston Ochoa Leon", "Gustavo Hernandez Palacios",
+  "Javier Torres Gomez", "Luis Almazan Treviño", "José Francisco López Verdugo",
+  "José Gadu Campos", "Juan Francisco Lizárraga Salas", "Efren Kassim Yaber Gomez",
+  "Juan Miguel Estrada Bujanos"
+];
+
+const HOSPITALS = [
+  "Centro Médico ABC Santa Fe", "Centro Médico ABC Observatorio",
+  "Instituto Nacional de Cancerologia", "Centro Médico Nacional \"20 de Noviembre\" ISSSTE",
+  "Centro Médico Nacional \"Siglo XXI\" Hospital de Oncología IMSS", "Centro Médico Naval",
+  "Hospital Angeles León", "Hospital Angeles Universidad", "Hospital Angeles del Carmen",
+  "Hospital Angeles Lomas", "Hospital Angeles Pedregal", "Hospital Angeles Puebla",
+  "Hospital Angeles México", "Hospital Angeles Lindavista", "Hospital Angeles Centro Sur",
+  "Hospital Angeles Tijuana", "Hospital Angeles Valle Oriente", "Hospital Angeles Torreón",
+  "Hospital Angeles Ciudad Juárez", "Hospital Central Militar", "Hospital del Prado",
+  "Hospital Español", "Hospital General \"Dr. Manuel Gea González\"", "Hospital Real San José",
+  "Instituto Nacional de Enfermedades Respiratorias", "Hospital San José Hermosillo",
+  "Hospital Zambrano Hellion", "Hospital Christus Muguerza Alta Especialidad",
+  "Hospital Médica Sur", "Hospital Angeles Culiacán", "Hospital CIMA Hermosillo",
+  "Hospital Hispano Americano", "Hospital Angeles Xalapa", "Hospital IMSS UMAE 25 MTY",
+  "Hospital Regional ISSSTE Saltillo"
+];
+
+const LIKERT_LABELS = ["Muy malo", "Malo", "Regular", "Bueno", "Muy bueno"];
+const LIKERT_EMOJIS = ["😞", "🙁", "😐", "🙂", "😊"];
+
+// Items Likert del formulario 1 (evaluación del cirujano)
+const LIKERT_CIRUJANO = [
+  "Conocimiento previo del paciente",
+  "Colocación de puertos",
+  "Acoplamiento (docking)",
+  "Movimiento de endoscopio",
+  "Utilización de finger clutch",
+  "Aplicación de energía",
+  "Utilización del tercer brazo (solo procedimientos de 4 brazos)",
+  "Tiempo de consola",
+  "Comunicación con el equipo quirúrgico",
+  "Conocimiento de la técnica quirúrgica",
+  "Identificación anatómica"
+];
+
+// Items Likert del formulario 2 (evaluación del proctor)
+const LIKERT_PROCTOR = [
+  "Preparación previa al caso (revisión de paciente / técnica)",
+  "Claridad en la explicación de los pasos",
+  "Guía durante la colocación de puertos",
+  "Asesoría durante el acoplamiento (docking)",
+  "Orientación en el manejo del endoscopio",
+  "Retroalimentación sobre uso de finger clutch",
+  "Asesoría en la aplicación de energía",
+  "Guía en el uso del tercer brazo (procedimientos de 4 brazos)",
+  "Paciencia y disposición para enseñar",
+  "Comunicación con el equipo quirúrgico",
+  "Dominio de la técnica quirúrgica demostrado"
+];
+
+// ============================================================
+// ESTADO
+// ============================================================
+let state = { screen: 'home', formType: null };
+const main = document.getElementById('main');
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function todayISO() {
+  const d = new Date();
+  return d.toISOString().split('T')[0];
+}
+
+function escapeHTML(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+function buildSelectOptions(list) {
+  return '<option value="">— Seleccionar —</option>' +
+    list.map(item => `<option value="${escapeHTML(item)}">${escapeHTML(item)}</option>`).join('');
+}
+
+// ============================================================
+// PANTALLA: HOME (SELECTOR)
+// ============================================================
+function renderHome() {
+  main.innerHTML = `
+    <div class="screen">
+      <h1 class="intro-title">¿Cuál es tu rol en el caso?</h1>
+      <p class="intro-subtitle">Selecciona tu rol para acceder a la encuesta correspondiente. Toma aproximadamente 2 minutos.</p>
+
+      <div class="role-cards">
+        <button class="role-card" onclick="selectRole('proctor')">
+          <div class="role-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div>
+            <div class="role-title">Soy Proctor</div>
+            <div class="role-desc">Acompañé el caso como proctor y voy a evaluar el desempeño del cirujano que apoyé.</div>
+          </div>
+        </button>
+
+        <button class="role-card" onclick="selectRole('cirujano')">
+          <div class="role-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 7h-3a2 2 0 0 1-2-2V2"/>
+              <path d="M9 18a4.6 4.4 0 0 1 0-9h3.5"/>
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+              <circle cx="15" cy="15" r="3"/>
+            </svg>
+          </div>
+          <div>
+            <div class="role-title">Soy Cirujano</div>
+            <div class="role-desc">Realicé el caso como cirujano de consola y voy a evaluar el desempeño del proctor que me apoyó.</div>
+          </div>
+        </button>
+      </div>
+
+      <div class="privacy-notice">
+        <strong>Aviso de privacidad</strong>
+        La información capturada será utilizada exclusivamente por Cyber Robotics México para fines internos de evaluación y mejora del programa de proctoring Da Vinci. Datos tratados conforme a la LFPDPPP.
+      </div>
+    </div>
+  `;
+}
+
+function selectRole(role) {
+  state.formType = role;
+  state.screen = 'form';
+  renderForm();
+}
+
+// ============================================================
+// PANTALLA: FORMULARIO
+// ============================================================
+function renderForm() {
+  const isProctor = state.formType === 'proctor';
+  const title = isProctor ? 'Evaluación del Cirujano' : 'Evaluación del Proctor';
+  const subtitle = isProctor
+    ? 'Como proctor, evalúa el desempeño del cirujano que acompañaste.'
+    : 'Como cirujano, evalúa el desempeño del proctor que te apoyó.';
+
+  const likertItems = isProctor ? LIKERT_CIRUJANO : LIKERT_PROCTOR;
+  const likertTitle = isProctor
+    ? '¿Cómo calificarías el desempeño del cirujano en los siguientes puntos?'
+    : '¿Cómo calificarías el desempeño del proctor en los siguientes puntos?';
+
+  const q8Label = isProctor
+    ? 'En general, ¿cómo calificarías el desempeño del cirujano?'
+    : 'En general, ¿cómo calificarías el desempeño del proctor?';
+  const q9Label = isProctor
+    ? 'En general, ¿cómo calificarías el desempeño del primer asistente?'
+    : 'En general, ¿cómo calificarías la contribución del proctor al éxito del caso?';
+  const q10Label = isProctor
+    ? 'En general, ¿cómo calificarías la eficiencia del quirófano?'
+    : '¿Recomendarías a este proctor para futuros casos de otros cirujanos?';
+
+  // Campo "Nombre del evaluado"
+  const q2Label = isProctor ? 'Nombre del cirujano (a quien evalúas)' : 'Nombre del proctor (a quien evalúas)';
+  const q2Field = isProctor
+    ? `<input type="text" id="q2" placeholder="Nombre completo del cirujano" required>`
+    : `<select id="q2" required>${buildSelectOptions(PROCTORS)}</select>`;
+
+  // Campo "Nombre del evaluador"
+  const q4Label = isProctor ? 'Tu nombre (proctor que acompañó el caso)' : 'Tu nombre (cirujano que recibió el apoyo)';
+  const q4Field = isProctor
+    ? `<select id="q4" required>${buildSelectOptions(PROCTORS)}</select>`
+    : `<input type="text" id="q4" placeholder="Tu nombre completo" required>`;
+
+  main.innerHTML = `
+    <div class="screen">
+      <button class="back-btn" onclick="goHome()">← Cambiar de rol</button>
+
+      <div class="form-header">
+        <h1 class="form-title">${title}</h1>
+        <p class="form-subtitle">${subtitle}</p>
+      </div>
+
+      <div class="progress"><div class="progress-fill" id="progress" style="width: 0%"></div></div>
+
+      <form id="surveyForm" onsubmit="return submitForm(event)">
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">1.</span>Fecha del procedimiento <span class="required">*</span></label>
+          <input type="date" id="q1" value="${todayISO()}" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">2.</span>${q2Label} <span class="required">*</span></label>
+          ${q2Field}
+        </div>
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">3.</span>Nombre del procedimiento <span class="required">*</span></label>
+          <input type="text" id="q3" placeholder="Ej. Histerectomía, Prostatectomía radical, etc." required>
+        </div>
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">4.</span>${q4Label} <span class="required">*</span></label>
+          ${q4Field}
+        </div>
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">5.</span>Hospital <span class="required">*</span></label>
+          <select id="q5" required>${buildSelectOptions(HOSPITALS)}</select>
+        </div>
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">6.</span>Especialista clínico presente en el caso <span class="required">*</span></label>
+          <input type="text" id="q6" placeholder="Nombre del especialista clínico de Cyber Robotics" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">7.</span>${likertTitle} <span class="required">*</span></label>
+          <p class="question-hint">Selecciona una opción por cada punto.</p>
+          <div class="likert-container">
+            <table class="likert-table">
+              <thead>
+                <tr>
+                  <th>Aspecto</th>
+                  ${LIKERT_LABELS.map(l => `<th>${l}</th>`).join('')}
+                </tr>
+              </thead>
+              <tbody>
+                ${likertItems.map((item, i) => `
+                  <tr>
+                    <td>${item}</td>
+                    ${LIKERT_LABELS.map((_, v) => `
+                      <td><input type="radio" name="q7_${i}" value="${v+1}" data-item="${escapeHTML(item)}"></td>
+                    `).join('')}
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">8.</span>${q8Label} <span class="required">*</span></label>
+          <div class="single-likert" data-group="q8">
+            ${LIKERT_LABELS.map((l, i) => `
+              <label class="likert-option" onclick="selectLikert(this, 'q8', ${i+1})">
+                <input type="radio" name="q8" value="${i+1}">
+                <span class="emoji">${LIKERT_EMOJIS[i]}</span>
+                ${l}
+              </label>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">9.</span>${q9Label} <span class="required">*</span></label>
+          <div class="single-likert" data-group="q9">
+            ${LIKERT_LABELS.map((l, i) => `
+              <label class="likert-option" onclick="selectLikert(this, 'q9', ${i+1})">
+                <input type="radio" name="q9" value="${i+1}">
+                <span class="emoji">${LIKERT_EMOJIS[i]}</span>
+                ${l}
+              </label>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label"><span class="question-num">10.</span>${q10Label} <span class="required">*</span></label>
+          <div class="single-likert" data-group="q10">
+            ${LIKERT_LABELS.map((l, i) => `
+              <label class="likert-option" onclick="selectLikert(this, 'q10', ${i+1})">
+                <input type="radio" name="q10" value="${i+1}">
+                <span class="emoji">${LIKERT_EMOJIS[i]}</span>
+                ${l}
+              </label>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="submit-area">
+          <div id="errorBox" class="submit-error" style="display:none;"></div>
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            Enviar evaluación
+          </button>
+        </div>
+
+      </form>
+    </div>
+  `;
+
+  // Actualizar barra de progreso dinámicamente
+  document.getElementById('surveyForm').addEventListener('input', updateProgress);
+  document.getElementById('surveyForm').addEventListener('change', updateProgress);
+}
+
+function selectLikert(el, group, value) {
+  // Desmarcar hermanos
+  const parent = el.parentElement;
+  parent.querySelectorAll('.likert-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  // Asegurar que el radio esté checked
+  el.querySelector('input').checked = true;
+  updateProgress();
+}
+
+function updateProgress() {
+  const form = document.getElementById('surveyForm');
+  if (!form) return;
+
+  const isProctor = state.formType === 'proctor';
+  const likertItems = isProctor ? LIKERT_CIRUJANO : LIKERT_PROCTOR;
+
+  let total = 0;
+  let filled = 0;
+
+  // q1-q6
+  ['q1','q2','q3','q4','q5','q6'].forEach(id => {
+    total++;
+    const el = document.getElementById(id);
+    if (el && el.value && el.value.trim() !== '') filled++;
+  });
+
+  // q7 matrix
+  likertItems.forEach((_, i) => {
+    total++;
+    if (form.querySelector(`input[name="q7_${i}"]:checked`)) filled++;
+  });
+
+  // q8-q10
+  ['q8','q9','q10'].forEach(name => {
+    total++;
+    if (form.querySelector(`input[name="${name}"]:checked`)) filled++;
+  });
+
+  const pct = (filled / total) * 100;
+  const bar = document.getElementById('progress');
+  if (bar) bar.style.width = pct + '%';
+}
+
+function goHome() {
+  if (confirm('¿Seguro que deseas regresar? Se perderán los datos ingresados.')) {
+    state.screen = 'home';
+    state.formType = null;
+    renderHome();
+  }
+}
+
+// ============================================================
+// ENVIAR FORMULARIO
+// ============================================================
+async function submitForm(e) {
+  e.preventDefault();
+
+  const isProctor = state.formType === 'proctor';
+  const likertItems = isProctor ? LIKERT_CIRUJANO : LIKERT_PROCTOR;
+  const form = document.getElementById('surveyForm');
+  const errorBox = document.getElementById('errorBox');
+  const btn = document.getElementById('submitBtn');
+
+  // Recolectar respuestas
+  const data = {
+    tipoFormulario: isProctor ? 'Evaluación del Cirujano' : 'Evaluación del Proctor',
+    fechaEnvio: new Date().toISOString(),
+    fechaProcedimiento: document.getElementById('q1').value,
+    evaluado: document.getElementById('q2').value,
+    procedimiento: document.getElementById('q3').value,
+    evaluador: document.getElementById('q4').value,
+    hospital: document.getElementById('q5').value,
+    especialistaClinico: document.getElementById('q6').value,
+    desempenoGeneralEvaluado: form.querySelector('input[name="q8"]:checked')?.value || '',
+    preguntaAdicional1: form.querySelector('input[name="q9"]:checked')?.value || '',
+    preguntaAdicional2: form.querySelector('input[name="q10"]:checked')?.value || ''
+  };
+
+  // Validar campos base
+  const camposRequeridos = ['fechaProcedimiento','evaluado','procedimiento','evaluador','hospital','especialistaClinico','desempenoGeneralEvaluado','preguntaAdicional1','preguntaAdicional2'];
+  for (const campo of camposRequeridos) {
+    if (!data[campo]) {
+      errorBox.textContent = 'Por favor completa todas las preguntas antes de enviar.';
+      errorBox.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return false;
+    }
+  }
+
+  // Agregar ítems Likert
+  const likertData = {};
+  for (let i = 0; i < likertItems.length; i++) {
+    const val = form.querySelector(`input[name="q7_${i}"]:checked`)?.value || '';
+    if (!val) {
+      errorBox.textContent = `Por favor califica el ítem: "${likertItems[i]}"`;
+      errorBox.style.display = 'block';
+      return false;
+    }
+    likertData[likertItems[i]] = val;
+  }
+  data.evaluacionDetallada = likertData;
+
+  errorBox.style.display = 'none';
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Enviando...';
+
+  try {
+    if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'PEGA_AQUI_LA_URL_DE_TU_GOOGLE_APPS_SCRIPT') {
+      // Envío real a Google Sheets
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
+      });
+    } else {
+      // Modo demo: solo guardar en consola
+      console.log('MODO DEMO — Datos que se enviarían a Google Sheets:', data);
+      await new Promise(r => setTimeout(r, 900));
+    }
+    renderSuccess(data);
+  } catch (err) {
+    errorBox.textContent = 'Error al enviar. Verifica tu conexión e inténtalo de nuevo.';
+    errorBox.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = 'Enviar evaluación';
+  }
+
+  return false;
+}
+
+// ============================================================
+// PANTALLA: ÉXITO
+// ============================================================
+function renderSuccess(data) {
+  state.screen = 'success';
+  main.innerHTML = `
+    <div class="screen success">
+      <div class="success-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2>¡Evaluación enviada!</h2>
+      <p>Gracias por tu tiempo. Tu evaluación ha sido registrada correctamente.</p>
+      <button class="btn btn-secondary" onclick="goHome()">Llenar otra evaluación</button>
+    </div>
+  `;
+}
+
+// ============================================================
+// INICIALIZACIÓN
+// ============================================================
+renderHome();
+</script>
+</body>
+</html>
