@@ -504,7 +504,7 @@
 // ============================================================
 
 // IMPORTANTE: Reemplazar esta URL con la URL de tu Google Apps Script desplegado
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxPXvb_valtBFV4ycF9cvSkLLIX0Qm3k5ijYKbzk5qhoYVQyKUxYAAonPkkYppnNfgQ/exec';
+const GOOGLE_SCRIPT_URL = 'PEGA_AQUI_LA_URL_DE_TU_GOOGLE_APPS_SCRIPT';
 
 // ============================================================
 // DATOS
@@ -512,39 +512,42 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxPXvb_valtBF
 
 const PROCTORS = [
   "Aaron Torres Garcia", "Adalberto Castro Alfaro", "Alejandro Alias Melgar",
-  "Andres Hernandez Porras", "Berenice Flores Maldonado", "Carlos Eduardo Alcivia Smith",
-  "Carlos Vásquez Lastra", "Cesar Felipe Ploneda Valencia", "Christian Villeda Sandoval",
-  "David Alejandro Pérez Salazar", "David de Leon Angeles", "Edwin Amaury Pérez Morales",
-  "Edwin Leopoldo Maldonado Garcia", "Efren Kassim Yaber Gomez", "Enrique Guzmán De Alba",
-  "Francina Valezka Bolaños Morales", "Gaston Ochoa Leon", "Gil Mussan Chelminsky",
-  "Gregorio Zubieta O'Farril", "Gustavo Hernandez Palacios", "Gustavo Morales Montor",
-  "Itzel Vela Sarmiento", "Javier Kuri Osorio", "Javier Torres Gomez",
-  "Jesús Elías Ortiz Gómez", "Jorge González Acosta", "José Antonio Zapata",
-  "José Francisco López Verdugo", "José Gadu Campos", "José Humberto Hernández Hernádez",
-  "José Luis Peña Quan", "José Oscar Gómez Ramírez", "Juan Francisco Lizárraga Salas",
-  "Juan Miguel Estrada Bujanos", "Luis Almazan Treviño", "Luis Ernesto Gallardo Valencia","Mario Alonso Calamaco",
-  "Marco Antonio Guzmán Aguilar", "Miguel Arnoldo Farias Alarcón", "Miguel Corres Molina",
-  "Nestor Julio Ureña Almanza", "Pedro Salvador Jimenez", "Rafael Alberto Valdez Flores",
-  "Rafael Medrano Guzmán", "René Hernández Sánchez", "Ricardo Alberto López Narváez",
-  "Roberto Alfonso Estrada Gómez", "Rodrigo Emilio Ruz Barros", "Rosario Durón Padilla",
-  "Seiichi Fuziwara Ruiz", "Victor Josué Carrasco Urrutia", "Víctor Manuel Topete Camarena"
+  "Aldo Antonio Avila", "Andres Hernandez Porras", "Berenice Flores Maldonado",
+  "Carlos Eduardo Alcivia Smith", "Carlos Vásquez Lastra", "Cesar Felipe Ploneda Valencia",
+  "Christian Villeda Sandoval", "David Alejandro Pérez Salazar", "David de Leon Angeles",
+  "Edwin Amaury Pérez Morales", "Edwin Leopoldo Maldonado Garcia", "Efren Kassim Yaber Gomez",
+  "Enrique Guzmán De Alba", "Francina Valezka Bolaños Morales", "Gaston Ochoa Leon",
+  "Gil Mussan Chelminsky", "Gregorio Zubieta O'Farril", "Gustavo Hernandez Palacios",
+  "Gustavo Morales Montor", "Itzel Vela Sarmiento", "Javier Kuri Osorio",
+  "Javier Torres Gomez", "Jesús Elías Ortiz Gómez", "Jorge González Acosta",
+  "José Antonio Zapata", "José Francisco López Verdugo", "José Gadu Campos",
+  "José Humberto Hernández Hernádez", "José Luis Peña Quan", "José Oscar Gómez Ramírez",
+  "Juan Francisco Lizárraga Salas", "Juan Miguel Estrada Bujanos", "Luis Almazan Treviño",
+  "Luis Ernesto Gallardo Valencia", "Marco Antonio Guzmán Aguilar", "Mario Alonso Calamaco",
+  "Miguel Arnoldo Farias Alarcón", "Miguel Corres Molina", "Nestor Julio Ureña Almanza",
+  "Pedro Salvador Jimenez", "Rafael Alberto Valdez Flores", "Rafael Medrano Guzmán",
+  "René Hernández Sánchez", "Ricardo Alberto López Narváez", "Roberto Alfonso Estrada Gómez",
+  "Rodrigo Emilio Ruz Barros", "Rosario Durón Padilla", "Seiichi Fuziwara Ruiz",
+  "Victor Josué Carrasco Urrutia", "Víctor Manuel Topete Camarena"
 ];
 
 const HOSPITALS = [
-  "Centro Médico ABC Santa Fe", "Centro Médico ABC Observatorio",
-  "Instituto Nacional de Cancerologia", "Centro Médico Nacional \"20 de Noviembre\" ISSSTE",
-  "Centro Médico Nacional \"Siglo XXI\" Hospital de Oncología IMSS", "Centro Médico Naval",
-  "Hospital Angeles León", "Hospital Angeles Universidad", "Hospital Angeles del Carmen",
-  "Hospital Angeles Lomas", "Hospital Angeles Pedregal", "Hospital Angeles Puebla",
-  "Hospital Angeles México", "Hospital Angeles Lindavista", "Hospital Angeles Centro Sur",
-  "Hospital Angeles Tijuana", "Hospital Angeles Valle Oriente", "Hospital Angeles Torreón",
-  "Hospital Angeles Ciudad Juárez", "Hospital Central Militar", "Hospital del Prado",
-  "Hospital Español", "Hospital General \"Dr. Manuel Gea González\"", "Hospital Real San José",
-  "Instituto Nacional de Enfermedades Respiratorias", "Hospital San José Hermosillo",
-  "Hospital Zambrano Hellion", "Hospital Christus Muguerza Alta Especialidad",
-  "Hospital Médica Sur", "Hospital Angeles Culiacán", "Hospital CIMA Hermosillo",
-  "Hospital Hispano Americano", "Hospital Angeles Xalapa", "Hospital IMSS UMAE 25 MTY",
-  "Hospital Regional ISSSTE Saltillo","Hospital Angeles Metropolitano", "Hospital Angeles Andares"
+  "Centro Médico ABC Observatorio", "Centro Médico ABC Santa Fe", "Centro Médico Naval",
+  "Centro Médico Nacional \"20 de Noviembre\" ISSSTE",
+  "Centro Médico Nacional \"Siglo XXI\" Hospital de Oncología IMSS",
+  "Hospital Angeles Andares", "Hospital Angeles Centro Sur", "Hospital Angeles Ciudad Juárez",
+  "Hospital Angeles Culiacán", "Hospital Angeles del Carmen", "Hospital Angeles León",
+  "Hospital Angeles Lindavista", "Hospital Angeles Lomas", "Hospital Angeles México",
+  "Hospital Angeles Metropolitano", "Hospital Angeles Pedregal", "Hospital Angeles Puebla",
+  "Hospital Angeles Tijuana", "Hospital Angeles Torreón", "Hospital Angeles Universidad",
+  "Hospital Angeles Valle Oriente", "Hospital Angeles Xalapa", "Hospital Central Militar",
+  "Hospital Christus Muguerza Alta Especialidad", "Hospital CIMA Hermosillo",
+  "Hospital del Prado", "Hospital Español",
+  "Hospital General \"Dr. Manuel Gea González\"", "Hospital Hispano Americano",
+  "Hospital IMSS UMAE 25 MTY", "Hospital Médica Sur", "Hospital Real San José",
+  "Hospital Regional ISSSTE Saltillo", "Hospital San José Hermosillo",
+  "Hospital Zambrano Hellion", "Instituto Nacional de Cancerologia",
+  "Instituto Nacional de Enfermedades Respiratorias"
 ];
 
 const LIKERT_LABELS = ["Muy malo", "Malo", "Regular", "Bueno", "Muy bueno"];
